@@ -1,68 +1,51 @@
 
 # Intro
 
-This repository provides a collection of artifacts: files that either known
-for the presence of certain bugs and volnurabilities or are
-famous applications and can be a subject of interest of the binary analysis tools.
+This repository provides a collection of artifacts: files that can be a subject of
+the interest of binary analysis tools either because they are already known for the
+presence of certain bugs and vulnerabilities or because they are parts of famous/critical
+applications and needed to be examined.
 
-Every artifact is represented by a docker file and an image built from it will contain
-only one entry at `/artifact/name-of-artifact`, e.g. `/artifact/openssl-1.1.0`.
+Every artifact can be can be found in the docker container at `/artifact/name-of-artifact`,
+e.g. `/artifact/openssl-1.1.0`.
 
-## Images naming scheme
+## Structure and naming
 
-All images are tagged according to the path of the `Dockerfile` relativly to the repository root,
-e.g. the image built from docker file at `foo/bar/1.2.3/Dockerfile` will be tagged as `foo-bar-1.2.3`.
-Also, all images places in `$DOCKERUSER/bap-artifacts` repository, where `DOCKERUSER` is
-`binaryanalysisplatform` by default and can be overriden (see below).
-
-
-## Structure
-
-`build` directory contains docker files that are required for building artifacts from scratch.
-Such images are not supposed to be used otherwise then for copying artifacts via
-`COPY --from=... src /artifact/` command.
-The naming scheme for these images is the same, therefore they will be prefixed with `build-`.
-All the other directories contains artifacts, possible accomplished with version:
-
-```
-$: tree openssl
-openssl/
-└── 1.1.0
-    └── Dockerfile
-```
-
-# Table of content
-The repository contains the next artifacts:
-- httpd 2.4.18
-- libbfd 2.31.1
-- lighttpd 1.4.15
-- nginx 1.7
-- ntpd 4.2.8p5
-- ntpdc 4.2.8p5
-- openssl 1.1.0
-- samba 4.7.6
-- smtpd 5.7.3p2
-- sqlite3 3.27.2
-- sshd 7.3.p1
-- swfc 0.9.2
-- swfcombine 0.9.2
-- swfextract 0.9.2
-- tshark 2.6.0
-- wav2swf 0.9.2
-- wpa_cli 2.2
-- wpa_supplicant 2.2
-
+Repository has a flat structure meaning that every directory contains only one `Dockerfile`.
+And the name of the directory is used as a tag for an image. Also, directory names can be used
+as targets to make commands (see below).
+All images are named as `$DOCKERUSER/bap-artifacts`, where `DOCKERUSER` is `binaryanalysisplatform`
+by default. Putting all together, the image built from the docker file at `foo-1.2.3/Dockerfile`
+will be named as `$DOCKERUSER/bap-artifacts:foo-1.2.3`.
 
 ## Building
 
-There are two commands for `make`: `build` and `push`.
-
 ### make build
-
-builds all artifacts. Every image is associated with the `$DOCKERUSER/bap-artifacts` repository,
-where `DOCKERUSER` is `binaryanalysisplatform` by default and may be overriden, e.g.:
-`make build DOCKERUSER=foo`
+Builds all artifacts. To build a specific one, use `make build dir-name`.
+To supersede user name, call `DOCKERUSER=foo make build`
 
 ### make push
-pushes all artifacts to the `$DOCKERUSER/bap-artifacts` repository.
-`build-` images are skipped.
+Pushes all artifacts into the `$DOCKERUSER/bap-artifacts` repository.
+To push a specific image, call `make push dir-name`.
+To supersede user name, call `DOCKERUSER=foo make push`. The later makes
+sense only if there are images that was built under the same docker user.
+
+## Adding new artifact
+
+There are the next considerations about images with artifacts:
+- every image should contain only one artifact at `/artifact/`
+- an image should be as slim as it possible
+
+Keeping that in mind, all you need to add a new artifact is:
+- create a folder
+- add a docker file into this folder with all instructions
+  needed to build an artifact
+- add few docker instructions to create a small image with
+  required structure, e.g.:
+  ```
+  FROM no-matter-what as builder
+
+  FROM debian:stable-slim
+  WORKDIR /artifact
+  COPY --from=builder /path/to/file /artifact
+  ```

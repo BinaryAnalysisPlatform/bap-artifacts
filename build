@@ -1,0 +1,83 @@
+#!/bin/bash
+
+user=${DOCKERUSER:-binaryanalysisplatform}
+repo=$user/bap-artifacts
+
+function name_of_path () {
+    echo "$repo:$1"
+}
+
+# create_image path-to-dockerfile
+function create_image() {
+    dir=`dirname $f`
+    image_name=$(name_of_path $dir)
+    docker image build $dir -t $image_name
+}
+
+function create_images() {
+    pref=""
+    if [ "all$1" == "all"  ]; then
+        pref=""
+    else
+        pref="$1/"
+    fi
+    for d in `ls $1`; do
+        for f in `find $pref$d -name Dockerfile`; do
+            create_image $f
+        done
+    done
+}
+
+function push_images() {
+    if [ "all$1" == "all" ]; then
+        for tag in `docker images $repo --format "{{.Tag}}"`; do
+            docker image push "$repo:$tag"
+        done
+    else
+        docker image push "$repo:$tag"
+    fi
+}
+
+function generate_summary () {
+    file=Dockerfile
+    rm -f $file
+
+    function write() {
+        printf "$1\n" >> $file
+    }
+
+    write 'FROM FROM debian:stable-slim'
+    write 'WORKDIR /artifacts'
+    write ''
+
+    for tag in `docker images $repo --format "{{.Tag}}"`; do
+        write "COPY --from=$repo:$tag  /artifact/* /artifacts/$tag/ "
+    done
+}
+
+
+cmd=$1
+shift
+
+targets="$@"
+
+if [ "$cmd" == "create" ]; then
+    if [ "all$targets" == "all" ]; then
+        create_images
+    else
+        for t in "$@"; do
+            create_images $t
+        done
+    fi
+elif [ "$cmd" == "push" ]; then
+    if [ "all$targets" == "all" ]; then
+        push_images
+    else
+        for t in "$@"; do
+            push_images $t
+        done
+    fi
+else
+    echo "don't know what to do with $cmd"
+    exit 1
+fi

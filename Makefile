@@ -1,8 +1,12 @@
 
-.PHONY: build
+args = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
+
 
 build:
-	sh build.sh $@
+	bash build create $(args)
 
-push: build
-	sh build.sh push $@
+push:
+	bash build push  $(args)
+
+
+.PHONY: build

@@ -11,5 +11,5 @@ RUN wget https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.15.t
     ./configure --prefix=/build && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
-COPY --from=builder /build/sbin/lighttpd /artifact/
+WORKDIR /
+COPY --from=builder /build/sbin/lighttpd /artifact

@@ -12,5 +12,5 @@ RUN wget https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-4.2.8p5.tar.
     ./configure --prefix=/build && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/sbin/ntpd /artifact

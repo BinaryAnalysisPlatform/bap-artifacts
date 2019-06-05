@@ -22,5 +22,5 @@ RUN wget https://www.wireshark.org/download/src/all-versions/wireshark-2.6.0.tar
     ./configure --prefix=/build --disable-wireshark && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/bin/tshark /artifact

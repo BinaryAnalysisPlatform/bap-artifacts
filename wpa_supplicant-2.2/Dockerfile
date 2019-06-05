@@ -16,5 +16,5 @@ RUN wget http://hostap.epitest.fi/releases/wpa_supplicant-2.2.tar.gz && \
     CFLAGS=-I/usr/include/libnl3 make && cp wpa_supplicant wpa_cli wpa_passphrase /build
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/wpa_supplicant /artifact

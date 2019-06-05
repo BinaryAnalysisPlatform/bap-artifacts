@@ -13,5 +13,5 @@ RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_0.tar.gz && \
     ./config --prefix=/build && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/bin/openssl /artifact

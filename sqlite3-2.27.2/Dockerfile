@@ -16,5 +16,5 @@ RUN wget https://www.sqlite.org/2019/sqlite-amalgamation-3270200.zip && \
     cp sqlite3 /build
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/sqlite3 /artifact

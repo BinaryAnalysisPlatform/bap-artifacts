@@ -28,13 +28,20 @@ function create_images() {
     done
 }
 
+# push tag
+function push () {
+    if [ $1 != "<none>" ]; then
+        docker image push "$repo:$1"
+    fi
+}
+
 function push_images() {
     if [ "all$1" == "all" ]; then
         for tag in `docker images $repo --format "{{.Tag}}"`; do
-            docker image push "$repo:$tag"
+            push "$tag"
         done
     else
-        docker image push "$repo:$tag"
+        push "$tag"
     fi
 }
 

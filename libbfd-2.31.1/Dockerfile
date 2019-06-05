@@ -16,5 +16,5 @@ RUN wget https://ftp.gnu.org/gnu/binutils/binutils-2.31.1.tar.gz && \
     cp /build/lib/libbfd-2.31.1.so /build/libbfd.so
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/libbfd.so /artifact

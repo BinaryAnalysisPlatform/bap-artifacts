@@ -14,5 +14,5 @@ RUN wget https://github.com/OpenSMTPD/OpenSMTPD/archive/opensmtpd-5.7.3p2.tar.gz
     ./configure --prefix=/build && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/sbin/smtpd /artifact

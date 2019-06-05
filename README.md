@@ -6,8 +6,7 @@ the interest of binary analysis tools either because they are already known for 
 presence of certain bugs and vulnerabilities or because they are parts of famous/critical
 applications and needed to be examined.
 
-Every artifact can be can be found in the docker container at `/artifact/name-of-artifact`,
-e.g. `/artifact/openssl-1.1.0`.
+Every artifact can be can be found in the docker container at `/artifact`.
 
 ## Structure and naming
 
@@ -33,7 +32,7 @@ sense only if there are images that was built under the same docker user.
 ## Adding new artifact
 
 There are the next considerations about images with artifacts:
-- every image should contain only one artifact at `/artifact/`
+- every image should contain only one artifact at `/artifact`
 - an image should be as slim as it possible
 
 Keeping that in mind, all you need to add a new artifact is:
@@ -45,7 +44,10 @@ Keeping that in mind, all you need to add a new artifact is:
   ```
   FROM no-matter-what as builder
 
+  # build instructions
+  ...
+
   FROM debian:stable-slim
-  WORKDIR /artifact
+  WORKDIR /
   COPY --from=builder /path/to/file /artifact
   ```

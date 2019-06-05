@@ -17,5 +17,5 @@ RUN wget http://swftools.org/swftools-0.9.2.tar.gz && \
     make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/bin/swfextract /artifact

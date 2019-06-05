@@ -4,5 +4,5 @@
 FROM servercontainers/samba:4.7.6 as builder
 
 FROM debian:stable-slim
-WORKDIR /artifact
-COPY --from=builder /sbin/samba /artifact/
+WORKDIR /
+COPY --from=builder /sbin/samba /artifact

@@ -15,5 +15,5 @@ RUN wget http://hostap.epitest.fi/releases/wpa_supplicant-2.2.tar.gz && \
 
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/wpa_cli /artifact

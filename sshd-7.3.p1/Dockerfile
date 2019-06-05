@@ -14,5 +14,5 @@ RUN wget https://github.com/openssh/openssh-portable/archive/V_7_3_P1.tar.gz && 
     autoreconf && ./configure --prefix=/build && make && make install
 
 FROM debian:stable-slim
-WORKDIR /artifact
+WORKDIR /
 COPY --from=builder /build/sbin/sshd /artifact

@@ -13,7 +13,7 @@ e.g. `/artifact/openssl-1.1.0`.
 
 Repository has a flat structure meaning that every directory contains only one `Dockerfile`.
 And the name of the directory is used as a tag for an image. Also, directory names can be used
-as targets to make commands (see below).
+as targets to the make commands (see below).
 All images are named as `$DOCKERUSER/bap-artifacts`, where `DOCKERUSER` is `binaryanalysisplatform`
 by default. Putting all together, the image built from the docker file at `foo-1.2.3/Dockerfile`
 will be named as `$DOCKERUSER/bap-artifacts:foo-1.2.3`.

@@ -6,11 +6,11 @@ the interest of binary analysis tools either because they are already known for 
 presence of certain bugs and vulnerabilities or because they are parts of famous/critical
 applications and needed to be examined.
 
-Every artifact can be can be found in the docker container at `/artifact`.
+Every artifact can be found in the docker container at `/artifact`.
 
 ## Structure and naming
 
-Repository has a flat structure meaning that every directory contains only one `Dockerfile`.
+The repository has a flat structure meaning that every directory contains only one `Dockerfile`.
 And the name of the directory is used as a tag for an image. Also, directory names can be used
 as targets to the make commands (see below).
 All images are named as `$DOCKERUSER/bap-artifacts`, where `DOCKERUSER` is `binaryanalysisplatform`
@@ -27,7 +27,7 @@ To supersede user name, call `DOCKERUSER=foo make build`
 Pushes all artifacts into the `$DOCKERUSER/bap-artifacts` repository.
 To push a specific image, call `make push dir-name`.
 To supersede user name, call `DOCKERUSER=foo make push`. The later makes
-sense only if there are images that was built under the same docker user.
+sense only if there are images that were built under the same docker user.
 
 ## Adding new artifact
 

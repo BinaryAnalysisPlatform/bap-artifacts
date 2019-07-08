@@ -11,7 +11,7 @@ RUN apt-get install -y autoconf zlib1g-dev libssl1.0-dev
 RUN wget https://github.com/openssh/openssh-portable/archive/V_7_3_P1.tar.gz && \
     tar xzf V_7_3_P1.tar.gz && \
     cd openssh-portable-V_7_3_P1 && \
-    autoreconf && ./configure --prefix=/build && make && make install
+    autoreconf && ./configure --disable-strip --prefix=/build && make && make install
 
 FROM debian:stable-slim
 WORKDIR /
